@@ -1,0 +1,16 @@
+require('dotenv').config({ path: './backend/.env' });
+const db = require('./backend/config/db');
+
+async function checkDb() {
+  try {
+    const res = await db.query("SELECT table_name FROM information_schema.tables WHERE table_schema='public';");
+    console.log("TABLES IN DATABASE:");
+    console.log(res.rows.map(r => r.table_name).join(', '));
+  } catch (err) {
+    console.error(err);
+  } finally {
+    process.exit(0);
+  }
+}
+
+checkDb();

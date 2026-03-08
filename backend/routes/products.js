@@ -1,0 +1,12 @@
+const router = require('express').Router();
+const multer = require('multer');
+const upload = multer({ storage: multer.memoryStorage() });
+const { getProducts, getProduct, createProduct, updateProduct, deleteProduct, bulkUpload } = require('../controllers/productController');
+const { authenticate, requireManager } = require('../middleware/auth');
+router.get('/', getProducts);
+router.post('/bulk-upload', authenticate, requireManager, upload.single('file'), bulkUpload);
+router.get('/:id', getProduct);
+router.post('/', authenticate, requireManager, createProduct);
+router.put('/:id', authenticate, requireManager, updateProduct);
+router.delete('/:id', authenticate, requireManager, deleteProduct);
+module.exports = router;
