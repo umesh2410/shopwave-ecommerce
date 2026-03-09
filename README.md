@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🌊 ShopWave — Full-Stack E-Commerce Platform
 
 A production-ready e-commerce application built with Next.js, Node.js, and PostgreSQL.
@@ -194,3 +195,6 @@ Set env: `NEXT_PUBLIC_API_URL=https://your-backend.render.com/api`
 Test API Key : rzp_test_SOcCiwyqxSfd5P
 
 Test Key Secret : ysG77GSEq3Nokte73nuwj29Q
+=======
+# shopwave-ecommerce
+>>>>>>> d30ea47cd90b7367a33e0eb92858a8baba174e5c
