@@ -19,7 +19,7 @@ export default function AdminOrders() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    orderAPI.getAll().then(res => setOrders(res.data)).catch(console.error).finally(() => setLoading(false));
+    orderAPI.getAll({ all: 'true' }).then(res => setOrders(res.data)).catch(console.error).finally(() => setLoading(false));
   }, []);
 
   const updateStatus = async (id, status) => {

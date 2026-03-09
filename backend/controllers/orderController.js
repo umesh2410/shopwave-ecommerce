@@ -57,13 +57,13 @@ exports.createOrder = async (req, res, next) => {
 
 exports.getOrders = async (req, res, next) => {
   try {
-    const isAdmin = req.user.role === 'admin';
+    const fetchAll = req.user.role === 'admin' && req.query.all === 'true';
     const result = await db.query(
       `SELECT o.*, u.name as user_name, u.email as user_email,
         (SELECT json_agg(json_build_object('id', oi.id, 'product_id', oi.product_id, 'quantity', oi.quantity, 'price', oi.price, 'name', p.name, 'image', p.image_url))
          FROM order_items oi JOIN products p ON oi.product_id = p.id WHERE oi.order_id = o.id) as items
-       FROM orders o JOIN users u ON o.user_id = u.id ${isAdmin ? '' : 'WHERE o.user_id = $1'} ORDER BY o.created_at DESC`,
-      isAdmin ? [] : [req.user.id]
+       FROM orders o JOIN users u ON o.user_id = u.id ${fetchAll ? '' : 'WHERE o.user_id = $1'} ORDER BY o.created_at DESC`,
+      fetchAll ? [] : [req.user.id]
     );
     res.json(result.rows);
   } catch (err) { next(err); }
