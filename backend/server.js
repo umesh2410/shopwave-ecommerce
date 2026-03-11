@@ -14,14 +14,33 @@ const { errorHandler, notFound } = require('./middleware/errorHandler');
 const app = express();
 
 // Security middleware
-app.use(helmet());
+app.use(helmet({
+  crossOriginResourcePolicy: false,
+}));
+
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:3001',
+  'https://shopwave-ecommerce-8eua.vercel.app',
+  process.env.FRONTEND_URL
+].filter(Boolean);
 
 app.use(cors({
-  origin: [
-    'http://localhost:3000',
-    'http://localhost:3001',
-    process.env.FRONTEND_URL
-  ],
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+    
+    // Check if origin matches any of the allowed origins or ends with vercel.app
+    const isAllowed = allowedOrigins.includes(origin) || 
+                      origin.endsWith('vercel.app') || 
+                      origin.includes('localhost');
+                      
+    if (isAllowed) {
+      return callback(null, true);
+    } else {
+      var msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+      return callback(new Error(msg), false);
+    }
+  },
   credentials: true
 }));
 
