@@ -8,7 +8,7 @@ import toast from 'react-hot-toast';
 import { ArrowRight, Mail, Lock, User, Phone } from 'lucide-react';
 
 export default function RegisterPage() {
-  const [form, setForm] = useState({ name: '', email: '', password: '', phone: '' });
+  const [form, setForm] = useState({ name: '', email: '', password: '', phone: '', role: 'user' });
   const [loading, setLoading] = useState(false);
   const { setAuth } = useAuthStore();
   const router = useRouter();
@@ -76,6 +76,21 @@ export default function RegisterPage() {
               </div>
             ))}
             
+            {/* Role Selection */}
+            <div className="space-y-2 mt-2">
+              <label className="block text-sm font-semibold text-surface-700">Account Type</label>
+              <div className="grid grid-cols-2 gap-4">
+                <label className={`flex items-center justify-center p-3 border rounded-xl cursor-pointer transition-all ${form.role === 'user' ? 'border-brand-500 bg-brand-50 text-brand-700 font-bold' : 'border-surface-200 text-surface-600 hover:border-surface-300'}`}>
+                  <input type="radio" name="role" value="user" className="hidden" checked={form.role === 'user'} onChange={(e) => setForm({ ...form, role: e.target.value })} />
+                  Customer
+                </label>
+                <label className={`flex items-center justify-center p-3 border rounded-xl cursor-pointer transition-all ${form.role === 'seller' ? 'border-brand-500 bg-brand-50 text-brand-700 font-bold' : 'border-surface-200 text-surface-600 hover:border-surface-300'}`}>
+                  <input type="radio" name="role" value="seller" className="hidden" checked={form.role === 'seller'} onChange={(e) => setForm({ ...form, role: e.target.value })} />
+                  Seller
+                </label>
+              </div>
+            </div>
+
             <button type="submit" disabled={loading} className="btn-primary w-full py-4 text-lg mt-8 group relative overflow-hidden">
               <div className="relative z-10 flex items-center justify-center gap-2">
                 {loading ? 'Creating Account...' : 'Create Account'}

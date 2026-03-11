@@ -43,8 +43,6 @@ exports.createOrder = async (req, res, next) => {
       await client.query('UPDATE products SET stock = stock - $1 WHERE id = $2', [item.quantity, item.product_id]);
     }
 
-    // Clear cart
-    await client.query('DELETE FROM cart WHERE user_id = $1', [req.user.id]);
     await client.query('COMMIT');
 
     // Send confirmation email mapping user data

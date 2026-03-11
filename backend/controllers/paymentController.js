@@ -36,16 +36,26 @@ exports.verifyPayment = async (req, res, next) => {
   try {
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
     const body = razorpay_order_id + '|' + razorpay_payment_id;
-    const expectedSignature = crypto.createHmac('sha256', process.env.RAZORPAY_KEY_SECRET).update(body).digest('hex');
+    const secret = process.env.RAZORPAY_KEY_SECRET.trim();
+    const expectedSignature = crypto.createHmac('sha256', secret).update(body).digest('hex');
+
+    console.log('[RAZORPAY VERIFY] body:', body);
+    console.log('[RAZORPAY VERIFY] Secret:', secret);
+    console.log('[RAZORPAY VERIFY] expectedSignature:', expectedSignature);
+    console.log('[RAZORPAY VERIFY] received signature:', razorpay_signature);
 
     if (expectedSignature !== razorpay_signature) {
-      return res.status(400).json({ error: 'Payment verification failed' });
+      return res.status(400).json({ error: 'Payment verification failed: Signature mismatch', expectedSignature, razorpay_signature });
     }
 
-    await db.query(
-      `UPDATE orders SET payment_status = 'paid', order_status = 'processing', razorpay_payment_id = $1, updated_at = NOW() WHERE razorpay_order_id = $2`,
+    const updateResult = await db.query(
+      `UPDATE orders SET payment_status = 'paid', order_status = 'processing', payment_id = $1, updated_at = NOW() WHERE razorpay_order_id = $2 RETURNING user_id`,
       [razorpay_payment_id, razorpay_order_id]
     );
+
+    if (updateResult.rows[0]) {
+      await db.query('DELETE FROM cart WHERE user_id = $1', [updateResult.rows[0].user_id]);
+    }
     res.json({ message: 'Payment verified successfully' });
   } catch (err) { next(err); }
 };

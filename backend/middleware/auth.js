@@ -19,14 +19,14 @@ const authenticate = async (req, res, next) => {
 };
 
 const requireAdmin = (req, res, next) => {
-  if (req.user?.role !== 'admin') {
+  if (req.user?.role !== 'admin' && req.user?.role !== 'seller') {
     return res.status(403).json({ error: 'Admin access required' });
   }
   next();
 };
 
 const requireManager = (req, res, next) => {
-  if (req.user?.role !== 'admin' && req.user?.role !== 'manager') {
+  if (req.user?.role !== 'admin' && req.user?.role !== 'manager' && req.user?.role !== 'seller') {
     return res.status(403).json({ error: 'Manager or Admin access required' });
   }
   next();

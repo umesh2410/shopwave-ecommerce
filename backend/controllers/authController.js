@@ -8,14 +8,15 @@ const generateToken = (user) =>
 
 exports.register = async (req, res, next) => {
   try {
-    const { name, email, password, phone } = req.body;
+    const { name, email, password, phone, role } = req.body;
+    const userRole = role === 'seller' ? 'seller' : 'user';
     if (!name || !email || !password) return res.status(400).json({ error: 'Name, email, and password are required' });
     const exists = await db.query('SELECT id FROM users WHERE email = $1', [email]);
     if (exists.rows[0]) return res.status(409).json({ error: 'Email already registered' });
     const hash = await bcrypt.hash(password, 10);
     const result = await db.query(
-      'INSERT INTO users (name, email, password_hash, phone) VALUES ($1, $2, $3, $4) RETURNING id, name, email, role',
-      [name, email, hash, phone]
+      'INSERT INTO users (name, email, password_hash, phone, role) VALUES ($1, $2, $3, $4, $5) RETURNING id, name, email, role',
+      [name, email, hash, phone, userRole]
     );
     const user = result.rows[0];
 

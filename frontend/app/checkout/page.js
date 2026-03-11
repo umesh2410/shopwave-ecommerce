@@ -3,12 +3,13 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Navbar from '../../components/layout/Navbar';
 import { cartAPI, orderAPI, paymentAPI } from '../../services/api';
-import { useAuthStore } from '../../hooks/useStore';
+import { useAuthStore, useCartStore } from '../../hooks/useStore';
 import { MapPin, CreditCard, CheckCircle, ShieldCheck, Lock } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export default function CheckoutPage() {
   const { user } = useAuthStore();
+  const { clearCart } = useCartStore();
   const router = useRouter();
   const [cart, setCart] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -80,6 +81,7 @@ export default function CheckoutPage() {
               razorpay_signature: response.razorpay_signature,
               order_id: order.id,
             });
+            clearCart();
             toast.success('Order placed successfully!');
             router.push(`/orders/${order.id}`);
           } catch {

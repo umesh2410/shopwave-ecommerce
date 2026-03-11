@@ -20,7 +20,7 @@ export default function LoginPage() {
       const res = await authAPI.login(form);
       setAuth(res.data.user, res.data.token);
       toast.success(`Welcome back, ${res.data.user.name}!`);
-      router.push(res.data.user.role === 'admin' ? '/admin/dashboard' : '/');
+      router.push((res.data.user.role === 'admin' || res.data.user.role === 'seller') ? '/admin/dashboard' : '/');
     } catch (err) {
       toast.error(err.response?.data?.error || 'Login failed');
     } finally { setLoading(false); }

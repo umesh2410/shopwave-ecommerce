@@ -107,7 +107,7 @@ export default function Navbar() {
                         <Package size={18} className="text-surface-400" /> My Orders
                       </Link>
                       
-                      {(user.role === 'admin' || user.role === 'manager') && (
+                      {(user.role === 'admin' || user.role === 'manager' || user.role === 'seller') && (
                         <Link href="/admin/dashboard" className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-surface-700 hover:bg-surface-50 hover:text-brand-600 rounded-xl transition-colors">
                           <LayoutDashboard size={18} className="text-surface-400" /> Admin Dashboard
                         </Link>
@@ -173,7 +173,7 @@ export default function Navbar() {
               <Link href="/orders" className="flex items-center gap-3 px-4 py-3 text-base font-medium text-surface-700 hover:bg-surface-50 hover:text-brand-600 rounded-xl transition-colors">
                 <Package size={20} className="text-brand-500" /> My Orders
               </Link>
-              {(user.role === 'admin' || user.role === 'manager') && (
+              {(user.role === 'admin' || user.role === 'manager' || user.role === 'seller') && (
                 <Link href="/admin/dashboard" className="flex items-center gap-3 px-4 py-3 text-base font-medium text-surface-700 hover:bg-surface-50 hover:text-brand-600 rounded-xl transition-colors">
                   <LayoutDashboard size={20} className="text-brand-500" /> Admin Dashboard
                 </Link>

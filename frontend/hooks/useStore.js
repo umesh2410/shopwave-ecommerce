@@ -17,11 +17,11 @@ export const useAuthStore = create(
       },
       isAdmin: () => {
         const state = get();
-        return state.user?.role === 'admin';
+        return state.user?.role === 'admin' || state.user?.role === 'seller';
       },
       isManager: () => {
         const state = get();
-        return state.user?.role === 'manager' || state.user?.role === 'admin';
+        return state.user?.role === 'manager' || state.user?.role === 'admin' || state.user?.role === 'seller';
       },
       initialize: () => {},
     }),
