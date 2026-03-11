@@ -2,7 +2,7 @@ import axios from "axios";
 
 const API_URL =
   process.env.NEXT_PUBLIC_API_URL ||
-  "https://shopwave-ecommerce-2svp.onrender.com/api";
+  "https://shopwave-backend-6hnz.onrender.com/api";
 
 const api = axios.create({
   baseURL: API_URL,
