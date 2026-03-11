@@ -2,7 +2,9 @@ const { Pool } = require('pg');
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: process.env.DATABASE_URL.includes('sslmode=require') ? { rejectUnauthorized: false } : false,
+  ssl: process.env.DATABASE_URL?.includes('sslmode=require') ? { rejectUnauthorized: false } : false,
+  // Force IPv4 as Neon/Render can sometimes fail with IPv6 (ENETUNREACH)
+  host: process.env.DATABASE_URL ? new URL(process.env.DATABASE_URL).hostname : undefined,
 });
 
 pool.on('connect', () => {
