@@ -9,7 +9,8 @@ const generateToken = (user) =>
 exports.register = async (req, res, next) => {
   try {
     const { name, email, password, phone, role } = req.body;
-    const userRole = role === 'seller' ? 'seller' : 'user';
+    // The database expects "customer" or "admin", not "user"
+    const userRole = role === 'admin' ? 'admin' : 'customer';
     if (!name || !email || !password) return res.status(400).json({ error: 'Name, email, and password are required' });
     const exists = await db.query('SELECT id FROM users WHERE email = $1', [email]);
     if (exists.rows[0]) return res.status(409).json({ error: 'Email already registered' });
