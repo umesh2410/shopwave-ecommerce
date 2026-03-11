@@ -4,7 +4,7 @@ const db = require('../config/db');
 const { sendWelcomeEmail } = require('../utils/mailer');
 
 const generateToken = (user) =>
-  jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN || '7d' });
+  jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: (process.env.JWT_EXPIRES_IN || '7d').trim() });
 
 exports.register = async (req, res, next) => {
   try {
