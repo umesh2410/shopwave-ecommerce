@@ -203,51 +203,53 @@ export default function ProductDetailPage() {
                 )}
 
                 {/* Actions Form */}
-                <div className="bg-white p-6 sm:p-8 rounded-[2rem] border border-surface-200 shadow-soft mb-10">
-                  {/* Quantity */}
-                  {product.stock > 0 && (
-                    <div className="mb-8">
-                      <div className="flex justify-between items-center mb-3">
-                        <span className="text-sm font-semibold text-surface-900 tracking-wide uppercase">Select Quantity</span>
+                {(!user || user.role !== 'admin') && (
+                  <div className="bg-white p-6 sm:p-8 rounded-[2rem] border border-surface-200 shadow-soft mb-10">
+                    {/* Quantity */}
+                    {product.stock > 0 && (
+                      <div className="mb-8">
+                        <div className="flex justify-between items-center mb-3">
+                          <span className="text-sm font-semibold text-surface-900 tracking-wide uppercase">Select Quantity</span>
+                        </div>
+                        <div className="inline-flex items-center bg-surface-50 rounded-2xl p-1.5 border border-surface-200 shadow-inner">
+                          <button
+                            onClick={() => setQuantity(q => Math.max(1, q - 1))}
+                            className="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-surface-700 hover:text-brand-600 hover:shadow transition-all"
+                          >
+                            <Minus className="w-5 h-5" />
+                          </button>
+                          <span className="w-16 text-center font-bold text-lg text-surface-900">{quantity}</span>
+                          <button
+                            onClick={() => setQuantity(q => Math.min(product.stock, q + 1))}
+                            className="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-surface-700 hover:text-brand-600 hover:shadow transition-all"
+                          >
+                            <Plus className="w-5 h-5" />
+                          </button>
+                        </div>
                       </div>
-                      <div className="inline-flex items-center bg-surface-50 rounded-2xl p-1.5 border border-surface-200 shadow-inner">
-                        <button
-                          onClick={() => setQuantity(q => Math.max(1, q - 1))}
-                          className="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-surface-700 hover:text-brand-600 hover:shadow transition-all"
-                        >
-                          <Minus className="w-5 h-5" />
-                        </button>
-                        <span className="w-16 text-center font-bold text-lg text-surface-900">{quantity}</span>
-                        <button
-                          onClick={() => setQuantity(q => Math.min(product.stock, q + 1))}
-                          className="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-surface-700 hover:text-brand-600 hover:shadow transition-all"
-                        >
-                          <Plus className="w-5 h-5" />
-                        </button>
-                      </div>
-                    </div>
-                  )}
+                    )}
 
-                  {/* Buttons */}
-                  <div className="flex flex-col sm:flex-row gap-4">
-                    <button
-                      onClick={handleAddToCart}
-                      disabled={adding || product.stock === 0}
-                      className="btn-secondary flex-1 py-4 text-base sm:text-lg group"
-                    >
-                      <ShoppingCart className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
-                      Add to Cart
-                    </button>
-                    <button
-                      onClick={handleBuyNow}
-                      disabled={product.stock === 0}
-                      className="btn-primary flex-1 py-4 text-base sm:text-lg shadow-brand-500/25 group"
-                    >
-                      <Zap className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
-                      Buy it Now
-                    </button>
+                    {/* Buttons */}
+                    <div className="flex flex-col sm:flex-row gap-4">
+                      <button
+                        onClick={handleAddToCart}
+                        disabled={adding || product.stock === 0}
+                        className="btn-secondary flex-1 py-4 text-base sm:text-lg group"
+                      >
+                        <ShoppingCart className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
+                        Add to Cart
+                      </button>
+                      <button
+                        onClick={handleBuyNow}
+                        disabled={product.stock === 0}
+                        className="btn-primary flex-1 py-4 text-base sm:text-lg shadow-brand-500/25 group"
+                      >
+                        <Zap className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
+                        Buy it Now
+                      </button>
+                    </div>
                   </div>
-                </div>
+                )}
 
                 {/* Trust Badges Details */}
                 <div className="grid grid-cols-2 gap-4">

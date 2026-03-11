@@ -76,14 +76,16 @@ export default function Navbar() {
                 <Search size={20} />
               </Link>
 
-              <Link href="/cart" className="relative w-10 h-10 rounded-full flex items-center justify-center text-surface-600 hover:bg-surface-100 hover:text-brand-600 transition-colors">
-                <ShoppingCart size={20} />
-                {cartCount > 0 && (
-                  <span className="absolute top-1.5 right-1.5 translate-x-1/2 -translate-y-1/2 bg-brand-500 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm">
-                    {cartCount}
-                  </span>
-                )}
-              </Link>
+              {(!user || user.role !== 'admin') && (
+                <Link href="/cart" className="relative w-10 h-10 rounded-full flex items-center justify-center text-surface-600 hover:bg-surface-100 hover:text-brand-600 transition-colors">
+                  <ShoppingCart size={20} />
+                  {cartCount > 0 && (
+                    <span className="absolute top-1.5 right-1.5 translate-x-1/2 -translate-y-1/2 bg-brand-500 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm">
+                      {cartCount}
+                    </span>
+                  )}
+                </Link>
+              )}
 
               {user ? (
                 <div className="relative group ml-1 hidden sm:block">
